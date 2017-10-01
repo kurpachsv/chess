@@ -11,7 +11,7 @@ function Bishop(position, board) {
 /**
  * @return {Array}
  */
-Bishop.prototype.makePossibleMoves = function () {
+Bishop.prototype.makePossibleMoves = function (c) {
     var possible = [
         [1, 1],
         [1, -1],
@@ -29,7 +29,13 @@ Bishop.prototype.makePossibleMoves = function () {
                 this.position.x + possible[i][0] * j, this.position.y + possible[i][1] * j
             );
 
-            if (p.isPossible() && (this.board.isEmptyCell(p) || this.board.isComputerPlayerFigure(p))) {
+            if (p.isPossible() && (this.board.isOpponentPlayerColor(p, c))) {
+                moves.push(p);
+                break;
+            } else if (p.isPossible() && (this.board.isPlayerColor(p, c))) {
+                // pass
+                break;
+            } else if (p.isPossible() && this.board.isEmptyCell(p)) {
                 moves.push(p);
             }
         }

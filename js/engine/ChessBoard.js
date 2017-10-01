@@ -1,6 +1,24 @@
 /**
  * @return {*}
  */
+function getCleanCells() {
+    var cells = [
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+    return cells;
+}
+
+
+/**
+ * @return {*}
+ */
 function getTheFirstMoveCells() {
     var cells = [
         [1, 1, 1, 1, 1, 1, 1, 1],
@@ -57,21 +75,44 @@ function ChessBoard(humanPlayerColor) {
     this.humanPlayerColor = humanPlayerColor;
     this.cellsState = null;
     this.theFirstMoveState = null;
+    this.highlightCellsState = null;
+    this.humanAttacksCellsState = null;
+    this.computerAttacksCellsState = null;
 }
 
 /**
  * @return {null|*}
  */
 ChessBoard.prototype.prepareBoard = function() {
-    if (this.humanPlayerColor === PlayerColorsEnum.WHITE) {
-        this.cellsState = getCellsForWhiteHumanPlayer();
-    } else {
-        this.cellsState = getCellsForBlackHumanPlayer()
-    }
+    if (this.humanPlayerColor === PlayerColorsEnum.WHITE) { this.cellsState = getCellsForWhiteHumanPlayer(); }
+    else { this.cellsState = getCellsForBlackHumanPlayer(); }
+
     this.theFirstMoveState = getTheFirstMoveCells();
+    this.highlightCellsState = getCleanCells();
+
     return this.cellsState;
 };
 
+/**
+ * @return {*}
+ */
+ChessBoard.prototype.cleanHighlightCell = function () {
+    return this.highlightCellsState = getCleanCells();
+};
+
+/**
+ * @return {*}
+ */
+ChessBoard.prototype.cleanHumanAttacksCells = function () {
+    return this.humanAttacksCellsState = getCleanCells();
+};
+
+/**
+ * @return {*}
+ */
+ChessBoard.prototype.cleanComputerAttacksCells = function () {
+    return this.computerAttacksCellsState = getCleanCells();
+};
 
 /**
  * @param position
@@ -85,9 +126,27 @@ ChessBoard.prototype.isEmptyCell = function (position) {
  * @param mouseCoordinates
  * @return {boolean}
  */
-ChessBoard.hasPlayerFigure = function (mouseCoordinates) {
+ChessBoard.prototype.hasPlayerFigure = function (mouseCoordinates) {
     var p = Position.getPositionOnBoardsByMouseCoords(mouseCoordinates);
     return p.isPossible() && !this.isEmptyCell(p);
+};
+
+/**
+ * @param c
+ * @param p
+ * @return {boolean}
+ */
+ChessBoard.prototype.hasQueen = function (c, p) {
+    if (c === PlayerColorsEnum.WHITE && this.humanPlayerColor === PlayerColorsEnum.WHITE && p.y === 0) {
+        return true;
+    } else if (c === PlayerColorsEnum.WHITE && this.humanPlayerColor === PlayerColorsEnum.BLACK && p.y === 7) {
+        return true;
+    } else if (c === PlayerColorsEnum.BLACK && this.humanPlayerColor === PlayerColorsEnum.WHITE && p.y === 7) {
+        return true;
+    } else if (p.y === 0) {
+        return true;
+    }
+    return false;
 };
 
 /**
@@ -106,8 +165,31 @@ ChessBoard.prototype.isHumanPlayerFigure = function (p) {
  */
 ChessBoard.prototype.isComputerPlayerFigure = function (p) {
     return !this.isEmptyCell(p) &&
-        getFigureColorByCode(Board.state[p.y][p.x]) !== null &&
-        getFigureColorByCode(Board.state[p.y][p.x]) !== this.humanPlayerColor;
+        getFigureColorByCode(this.cellsState[p.y][p.x]) !== null &&
+        getFigureColorByCode(this.cellsState[p.y][p.x]) !== this.humanPlayerColor;
+};
+
+/**
+ * @param p
+ * @param c
+ * @return {boolean}
+ */
+ChessBoard.prototype.isOpponentPlayerColor = function (p, c) {
+    var opponentColor = c === PlayerColorsEnum.BLACK ? PlayerColorsEnum.WHITE : PlayerColorsEnum.BLACK;
+    return !this.isEmptyCell(p) &&
+        getFigureColorByCode(this.cellsState[p.y][p.x]) !== null &&
+        getFigureColorByCode(this.cellsState[p.y][p.x]) !== opponentColor;
+};
+
+/**
+ * @param p
+ * @param c
+ * @return {boolean}
+ */
+ChessBoard.prototype.isPlayerColor = function (p, c) {
+    return !this.isEmptyCell(p) &&
+        getFigureColorByCode(this.cellsState[p.y][p.x]) !== null &&
+        getFigureColorByCode(this.cellsState[p.y][p.x]) !== c;
 };
 
 /**

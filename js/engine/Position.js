@@ -10,13 +10,13 @@ function Position(x, y) {
 
 /**
  * @param mouseCoordinates
- * @return {{x: number, y: number}}
+ * @return {Position}
  */
 Position.getPositionOnBoardsByMouseCoords = function (mouseCoordinates) {
-    return {
-        x : Math.floor((2 + mouseCoordinates.x - (figureSizeInPx >> 1)) / (figureSizeInPx + 1)),
-        y : Math.floor((2 + mouseCoordinates.y - (figureSizeInPx >> 1)) / (figureSizeInPx + 1))
-    };
+    return new Position(
+        Math.floor((2 + mouseCoordinates.x - (figureSizeInPx >> 1)) / (figureSizeInPx + 1)),
+        Math.floor((2 + mouseCoordinates.y - (figureSizeInPx >> 1)) / (figureSizeInPx + 1))
+    );
 };
 
 /**

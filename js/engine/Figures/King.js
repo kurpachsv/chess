@@ -11,7 +11,7 @@ function King(position, board) {
 /**
  * @return {Array}
  */
-King.prototype.makePossibleMoves = function () {
+King.prototype.makePossibleMoves = function (c) {
     var possible = [
         [1, 1],
         [1, -1],
@@ -32,17 +32,17 @@ King.prototype.makePossibleMoves = function () {
             this.position.x + possible[i][0], this.position.y + possible[i][1]
         );
 
-        if (p.isPossible() && (this.board.isEmptyCell(p) || this.board.isComputerPlayerFigure(p))) {
+        if (p.isPossible() && (this.board.isOpponentPlayerColor(p, c) || this.board.isEmptyCell(p))) {
             moves.push(p);
         }
     }
 
-    if (this.isPossibleCastlingToLeftCorner(this.board.humanPlayerColor)) {
-        moves.push(this.getCastlingToLeftCornerKingPosition(this.board.humanPlayerColor));
+    if (this.isPossibleCastlingToLeftCorner(c)) {
+        moves.push(this.getCastlingToLeftCornerKingPosition(c));
     }
 
-    if (this.isPossibleCastlingToRightCorner(this.board.humanPlayerColor)) {
-        moves.push(this.getCastlingToRightCornerKingPosition(this.board.humanPlayerColor));
+    if (this.isPossibleCastlingToRightCorner(c)) {
+        moves.push(this.getCastlingToRightCornerKingPosition(c));
     }
 
     return moves;

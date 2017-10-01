@@ -11,7 +11,7 @@ function Queen(position, board) {
 /**
  * @return {Array}
  */
-Queen.prototype.makePossibleMoves = function () {
+Queen.prototype.makePossibleMoves = function (c) {
     var possible = [
         [1, 1],
         [1, -1],
@@ -34,7 +34,13 @@ Queen.prototype.makePossibleMoves = function () {
                 this.position.y + possible[i][1] * j
             );
 
-            if (p.isPossible() && (this.board.isEmptyCell(p) || this.board.isComputerPlayerFigure(p))) {
+            if (p.isPossible() && this.board.isOpponentPlayerColor(p, c)) {
+                moves.push(p);
+                break;
+            } else if (p.isPossible() && this.board.isPlayerColor(p, c)) {
+                // pass
+                break;
+            } else if (p.isPossible() && this.board.isEmptyCell(p)) {
                 moves.push(p);
             }
         }

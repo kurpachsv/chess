@@ -13,7 +13,7 @@ function Pawn(position, board) {
  * @return {boolean}
  */
 Pawn.prototype.isNotFirstMove = function (p) {
-    return !p.isEmptyCell(p) && this.board.theFirstMoveState[p.y][p.x] === 0;
+    return p.isPossible() && !this.board.isEmptyCell(p) && this.board.theFirstMoveState[p.y][p.x] === 0;
 };
 
 /**
@@ -30,7 +30,7 @@ Pawn.prototype.getSign = function(currentColor) {
 /**
  * @return {Array}
  */
-Pawn.prototype.makePossibleMoves = function (currentColor) {
+Pawn.prototype.makePossibleMoves = function (c) {
     var possible = [
         [0, 2],
         [0, 1],
@@ -40,12 +40,12 @@ Pawn.prototype.makePossibleMoves = function (currentColor) {
 
     var moves = [],
         p,
-        s = this.getSign(currentColor);
+        s = this.getSign(c);
 
     // если слева есть вражеская фигура
     p = new Position(this.position.x + possible[3][0] * s, this.position.y + possible[3][1] * s);
 
-    if (p.isPossible() && this.board.isComputerPlayerFigure(p)) {
+    if (p.isPossible() && this.board.isOpponentPlayerColor(p, c)) {
         moves.push(p);
     }
 
@@ -54,7 +54,7 @@ Pawn.prototype.makePossibleMoves = function (currentColor) {
         this.position.x + possible[2][0] * s, this.position.y + possible[2][1] * s
     );
 
-    if (p.isPossible() && this.board.isComputerPlayerFigure(p)) {
+    if (p.isPossible() && this.board.isOpponentPlayerColor(p, c)) {
         moves.push(p);
     }
 
@@ -65,7 +65,7 @@ Pawn.prototype.makePossibleMoves = function (currentColor) {
         );
 
         if (p.isPossible() && this.board.isEmptyCell(p) &&
-            /* ...и нет на пути вражеской фигуры */ this.board.isEmptyCell(new Position(p.x, p.y - s)) {
+            /* ...и нет на пути вражеской фигуры */ this.board.isEmptyCell(new Position(p.x, p.y - s))) {
             moves.push(p);
         }
     }
