@@ -178,7 +178,7 @@ ChessBoard.prototype.isOpponentPlayerColor = function (p, c) {
     var opponentColor = c === PlayerColorsEnum.BLACK ? PlayerColorsEnum.WHITE : PlayerColorsEnum.BLACK;
     return !this.isEmptyCell(p) &&
         getFigureColorByCode(this.cellsState[p.y][p.x]) !== null &&
-        getFigureColorByCode(this.cellsState[p.y][p.x]) !== opponentColor;
+        getFigureColorByCode(this.cellsState[p.y][p.x]) === opponentColor;
 };
 
 /**
@@ -189,7 +189,7 @@ ChessBoard.prototype.isOpponentPlayerColor = function (p, c) {
 ChessBoard.prototype.isPlayerColor = function (p, c) {
     return !this.isEmptyCell(p) &&
         getFigureColorByCode(this.cellsState[p.y][p.x]) !== null &&
-        getFigureColorByCode(this.cellsState[p.y][p.x]) !== c;
+        getFigureColorByCode(this.cellsState[p.y][p.x]) === c;
 };
 
 /**

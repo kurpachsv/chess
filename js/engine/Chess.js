@@ -42,13 +42,13 @@ Chess.prototype.generateMoves = function (position, code) {
         case 1:
         case 7: moves = (new Pawn(position, this.chessBoard)).makePossibleMoves(color); break;
         case 3:
-        case 9: moves = (new Knight(position, this.chessBoard)).makePossibleMoves(); break;
+        case 9: moves = (new Knight(position, this.chessBoard)).makePossibleMoves(color); break;
         case 4:
-        case 10: moves = (new Bishop(position, this.chessBoard)).makePossibleMoves(); break;
+        case 10: moves = (new Bishop(position, this.chessBoard)).makePossibleMoves(color); break;
         case 2:
-        case 8: moves = (new Rook(position, this.chessBoard)).makePossibleMoves(); break;
+        case 8: moves = (new Rook(position, this.chessBoard)).makePossibleMoves(color); break;
         case 6:
-        case 12: moves = (new Queen(position, this.chessBoard)).makePossibleMoves(); break;
+        case 12: moves = (new Queen(position, this.chessBoard)).makePossibleMoves(color); break;
         case 5:
         case 11: moves = (new King(position, this.chessBoard)).makePossibleMoves(color); break;
     }
