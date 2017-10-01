@@ -1,17 +1,17 @@
 /**
- * @param color
  * @param position
+ * @param board
  * @constructor
  */
-function Knight(color, position) {
-    this.color = color;
+function Knight(position, board) {
     this.position = position;
+    this.board = board;
 }
 
 /**
  * @return {Array}
  */
-Knight.prototype.makePossiblePositions = function () {
+Knight.prototype.makePossibleMoves = function () {
     var possible = [
         [1, 2],
         [2, 1],
@@ -23,12 +23,22 @@ Knight.prototype.makePossiblePositions = function () {
         [-1, -2]
     ];
 
+    var moves = [],
+        p;
 
-    var r = [];
+    for (var i = 0; i < possible.length; i++) {
 
-    // ...
+        p = new Position(
+            this.position.x + possible[i][0], this.position.y + possible[i][1]
+        );
 
-    return r;
+        if (p.isPossible() && (this.board.isEmptyCell(p) || this.board.isComputerPlayerFigure(p))) {
+            moves.push(p);
+        }
+    }
+
+
+    return moves;
 };
 
 /**

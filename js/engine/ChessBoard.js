@@ -1,6 +1,23 @@
 /**
  * @return {*}
  */
+function getTheFirstMoveCells() {
+    var cells = [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    return cells;
+}
+
+/**
+ * @return {*}
+ */
 function getCellsForWhiteHumanPlayer() {
     var cells = [
         [8, 9, 10, 12, 11, 10, 9, 8],
@@ -39,6 +56,7 @@ function getCellsForBlackHumanPlayer() {
 function ChessBoard(humanPlayerColor) {
     this.humanPlayerColor = humanPlayerColor;
     this.cellsState = null;
+    this.theFirstMoveState = null;
 }
 
 /**
@@ -50,6 +68,7 @@ ChessBoard.prototype.prepareBoard = function() {
     } else {
         this.cellsState = getCellsForBlackHumanPlayer()
     }
+    this.theFirstMoveState = getTheFirstMoveCells();
     return this.cellsState;
 };
 
